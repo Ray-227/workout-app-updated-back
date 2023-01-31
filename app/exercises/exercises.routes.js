@@ -2,10 +2,12 @@ import express from 'express'
 
 import { protect } from '../middleware/auth.middleware.js'
 
-import { createExercise } from './exercises.conroller.js'
+import { createExercise, deleteExerciseByID, getExercises, updateExerciseByID } from './exercises.controller.js'
 
 const router = express.Router()
 
-router.route('/').post(protect, createExercise)
+router.route('/').post(protect, createExercise).get(protect, getExercises)
+
+router.route('/:id').put(protect, updateExerciseByID).delete(protect, deleteExerciseByID)
 
 export default router

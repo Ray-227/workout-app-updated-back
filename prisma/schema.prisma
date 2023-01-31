@@ -28,5 +28,38 @@ model Exercises {
 
   name      String
   times     Int
-  iconPath  String
+  iconPath  String @map("icon_path")
+
+  workouts Workouts[]
+}
+
+model Workouts {
+  id        Int @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  name      String
+  exercises Exercises[]
+}
+
+model ExercisesLog {
+  id        Int @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  name      String
+  times     Int
+  iconPath  String @map("icon_path")
+
+  workoutsLog WorkoutsLog[]
+}
+
+model WorkoutsLog {
+  id             Int @id @default(autoincrement())
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  name           String
+  exercisesLog   ExercisesLog @relation(fields: [exercisesLogID], references: [id])
+  exercisesLogID Int
 }
