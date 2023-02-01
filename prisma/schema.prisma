@@ -11,55 +11,93 @@ datasource db {
 }
 
 model Users {
-  id        Int @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id           Int @id @default(autoincrement())
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  email     String @unique
-  password  String
-  name      String
-  images    String[]
+  email        String @unique
+  password     String
+  name         String
+  images       String[]
+
+  exercisesLog ExercisesLog[]
+  workoutsLog  WorkoutsLog[]
 }
 
 model Exercises {
-  id        Int @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id           Int @id @default(autoincrement())
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  name      String
-  times     Int
-  iconPath  String @map("icon_path")
+  name         String
+  times        Int
+  iconPath     String @map("icon_path")
 
-  workouts Workouts[]
-}
+  workouts     Workouts[]
 
-model Workouts {
-  id        Int @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  name      String
-  exercises Exercises[]
+  exerciseLog   ExercisesLog? @relation(fields: [exerciseLogID], references: [id])
+  exerciseLogID Int? @map("exercise_log_id")
 }
 
 model ExercisesLog {
-  id        Int @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id           Int @id @default(autoincrement())
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  name      String
-  times     Int
-  iconPath  String @map("icon_path")
+  isCompleted  Boolean @default(false) @map("is_completed")
+  times        ExercisesTime[]
 
+  user         Users? @relation(fields: [userID], references: [id])
+  userID       Int? @map("user_id")
+
+  workoutLog   WorkoutsLog? @relation(fields: [workoutLogID], references: [id])
+  workoutLogID Int? @map("workout_log_id")
+
+  exercises    Exercises[]
+
+  @@map("Exercises_log")
+}
+
+model ExercisesTime {
+  id            Int @id @default(autoincrement())
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  weight        Int @default(0)
+  repeat        Int @default(0)
+  isCompleted   Boolean @default(false) @map("is_completed")
+
+  exerciseLog   ExercisesLog? @relation(fields: [exerciseLogID], references: [id])
+  exerciseLogID Int? @map("exercise_log_id")
+
+  @@map("Exercises_time")
+}
+
+model Workouts {
+  id          Int @id @default(autoincrement())
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  name        String
+
+  exercises   Exercises[]
   workoutsLog WorkoutsLog[]
 }
 
 model WorkoutsLog {
-  id             Int @id @default(autoincrement())
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id           Int @id @default(autoincrement())
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  name           String
-  exercisesLog   ExercisesLog @relation(fields: [exercisesLogID], references: [id])
-  exercisesLogID Int
+  isCompleted  Boolean @default(false) @map("is_completed")
+
+  workout      Workouts? @relation(fields: [workoutID], references: [id])
+  workoutID    Int? @map("workout_id")
+
+  user         Users? @relation(fields: [userID], references: [id])
+  userID       Int? @map("user_id")
+
+  exercisesLog ExercisesLog[]
+
+  @@map("Workouts_log")
 }
