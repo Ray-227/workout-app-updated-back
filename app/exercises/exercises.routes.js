@@ -11,7 +11,8 @@ import {
 import {
 	createExerciseLog,
 	getExerciseLogByID,
-	updateExerciseLogCompleteByID
+	updateExerciseLogCompleteByID,
+	updateExerciseTimeByID
 } from './log/exercuses-log.controller.js'
 
 const router = express.Router()
@@ -31,5 +32,7 @@ router
 router
 	.route('/log/complete/:exerciseLogID')
 	.patch(protect, updateExerciseLogCompleteByID)
+
+router.route('/log/time/:id').put(protect, updateExerciseTimeByID)
 
 export default router
