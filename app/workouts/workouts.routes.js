@@ -2,7 +2,10 @@ import express from 'express'
 
 import { protect } from '../middleware/auth.middleware.js'
 
-import { createWorkoutLog } from './log/workouts-log.controller.js'
+import {
+	createWorkoutLog,
+	getWorkoutLogByID
+} from './log/workouts-log.controller.js'
 import {
 	createWorkout,
 	deleteWorkoutByID,
@@ -20,6 +23,9 @@ router
 	.get(protect, getWorkoutByID)
 	.put(protect, updateWorkoutByID)
 	.delete(protect, deleteWorkoutByID)
-router.route('/log/:id').post(protect, createWorkoutLog)
+router
+	.route('/log/:id')
+	.post(protect, createWorkoutLog)
+	.get(protect, getWorkoutLogByID)
 
 export default router
