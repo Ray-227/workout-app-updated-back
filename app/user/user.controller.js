@@ -42,7 +42,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 
 	res.json({
 		...user,
-		statistic: [
+		statistics: [
 			{
 				label: 'Minutes',
 				value: Math.ceil(countExerciseTimesCompleted * 2.3) || 0

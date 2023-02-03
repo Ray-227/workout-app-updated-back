@@ -95,11 +95,7 @@ export const getExerciseLogByID = asyncHandler(async (req, res) => {
 		},
 		include: {
 			exercises: true,
-			times: {
-				orderBy: {
-					id: 'desc'
-				}
-			}
+			times: true
 		}
 	})
 
