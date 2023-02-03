@@ -4,7 +4,8 @@ import { protect } from '../middleware/auth.middleware.js'
 
 import {
 	createWorkoutLog,
-	getWorkoutLogByID
+	getWorkoutLogByID,
+	updateCompleteWorkoutLogByID
 } from './log/workouts-log.controller.js'
 import {
 	createWorkout,
@@ -23,9 +24,12 @@ router
 	.get(protect, getWorkoutByID)
 	.put(protect, updateWorkoutByID)
 	.delete(protect, deleteWorkoutByID)
+
 router
 	.route('/log/:id')
 	.post(protect, createWorkoutLog)
 	.get(protect, getWorkoutLogByID)
+
+router.route('/log/complete/:id').patch(protect, updateCompleteWorkoutLogByID)
 
 export default router

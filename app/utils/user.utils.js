@@ -5,5 +5,7 @@ export const getSelectedUserFields = {
 	email: true,
 	password: false,
 	name: true,
-	images: true
+	images: true,
+	exercisesLog: true,
+	workoutsLog: true
 }

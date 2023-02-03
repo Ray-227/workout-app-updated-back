@@ -77,6 +77,21 @@ export const getWorkoutLogByID = asyncHandler(async (req, res) => {
 	const workoutLog = await prisma.workoutsLog.findUnique({
 		where: {
 			id: workoutID
+		},
+		include: {
+			workout: {
+				include: {
+					exercises: true
+				}
+			},
+			exercisesLog: {
+				orderBy: {
+					id: 'asc'
+				},
+				include: {
+					exercises: true
+				}
+			}
 		}
 	})
 
@@ -85,5 +100,31 @@ export const getWorkoutLogByID = asyncHandler(async (req, res) => {
 		throw new Error('Workout not found!')
 	}
 
-	res.json(workoutLog)
+	const minutes = Math.ceil(workoutLog.workout.exercises.length * 3.7)
+
+	res.json({ ...workoutLog, minutes })
+})
+
+// @desc    Update workout log completed
+// @route   PUT /api/workout/log/complete/:id
+// @access  Private
+export const updateCompleteWorkoutLogByID = asyncHandler(async (req, res) => {
+	const workoutID = Number(req.params.id)
+	const isCompleted = req.body.isCompleted
+
+	try {
+		const workoutLog = await prisma.workoutsLog.update({
+			where: {
+				id: workoutID
+			},
+			data: {
+				isCompleted
+			}
+		})
+
+		res.json(workoutLog)
+	} catch {
+		res.status(404)
+		throw new Error('Workout not found!')
+	}
 })

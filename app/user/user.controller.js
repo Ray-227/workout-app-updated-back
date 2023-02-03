@@ -11,8 +11,28 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 		where: {
 			id: req.user.id
 		},
-		select: getSelectedUserFields
+		include: {
+			workoutsLog: true,
+			exercisesLog: {
+				include: {
+					times: true
+				}
+			}
+		}
 	})
 
-	res.json(user)
+	const minutes = Math.ceil(user.exercisesLog.length * 3.7)
+	const workouts = user.workoutsLog.length
+	let kgs = 0
+	user.exercisesLog.forEach(exercise => {
+		exercise.times.forEach(item => {
+			kgs += item.weight
+		})
+	})
+
+	delete user.password
+	delete user.workoutsLog
+	delete user.exercisesLog
+
+	res.json({ ...user, minutes, workouts, kgs })
 })
