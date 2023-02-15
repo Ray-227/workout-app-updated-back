@@ -2,6 +2,7 @@ import 'colors'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
+import fileUpload from 'express-fileupload'
 import morgan from 'morgan'
 import path from 'path'
 
@@ -10,6 +11,7 @@ import { errorHandler, notFound } from './app/middleware/error.middleware.js'
 import authRoutes from './app/auth/auth.routes.js'
 import exercisesRoutes from './app/exercises/exercises.routes.js'
 import { prisma } from './app/prisma.js'
+import uploadRoutes from './app/upload/upload.routes.js'
 import userRoutes from './app/user/user.routes.js'
 import workoutsRoutes from './app/workouts/workouts.routes.js'
 
@@ -22,14 +24,20 @@ async function main() {
 
 	const __dirname = path.resolve()
 
-	app.use('/uploads', express.static(path.join(__dirname, '/uploads/')))
-
 	app.use(cors())
 	app.use(express.json())
+	app.use(
+		fileUpload({
+			createParentPath: true
+		})
+	)
+	app.use('/uploads', express.static(path.join(__dirname, '/uploads/')))
+
 	app.use('/api/auth', authRoutes)
 	app.use('/api/users', userRoutes)
 	app.use('/api/exercises', exercisesRoutes)
 	app.use('/api/workouts', workoutsRoutes)
+	app.use('/api/upload', uploadRoutes)
 
 	app.use(notFound)
 	app.use(errorHandler)
