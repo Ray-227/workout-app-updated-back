@@ -38,7 +38,7 @@ export const createExerciseLog = asyncHandler(async (req, res) => {
 					id: req.user.id
 				}
 			},
-			exercises: {
+			exercise: {
 				connect: {
 					id: exerciseID
 				}
@@ -50,7 +50,7 @@ export const createExerciseLog = asyncHandler(async (req, res) => {
 			}
 		},
 		include: {
-			exercises: true,
+			exercise: true,
 			times: true
 		}
 	})
@@ -69,7 +69,7 @@ export const getExerciseLogByID = asyncHandler(async (req, res) => {
 			id: exerciseID
 		},
 		include: {
-			exercises: true,
+			exercise: true,
 			workoutLog: true,
 			times: {
 				orderBy: {
@@ -94,7 +94,7 @@ export const getExerciseLogByID = asyncHandler(async (req, res) => {
 			createdAt: 'desc'
 		},
 		include: {
-			exercises: true,
+			exercise: true,
 			times: true
 		}
 	})
@@ -125,7 +125,7 @@ export const updateExerciseLogCompleteByID = asyncHandler(async (req, res) => {
 					select: getSelectedUserFields
 				},
 				workoutLog: true,
-				exercises: true,
+				exercise: true,
 				times: true
 			}
 		})

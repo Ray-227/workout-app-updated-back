@@ -1,6 +1,4 @@
 import asyncHandler from 'express-async-handler'
-import fs from 'fs'
-import { dirname } from 'path'
 import path from 'path'
 
 import { prisma } from '../prisma.js'
