@@ -38,7 +38,7 @@ export const createWorkoutLog = asyncHandler(async (req, res) => {
 								id: req.user.id
 							}
 						},
-						exercises: {
+						exercise: {
 							connect: {
 								id: exercise.id
 							}
@@ -89,7 +89,7 @@ export const getWorkoutLogByID = asyncHandler(async (req, res) => {
 					id: 'asc'
 				},
 				include: {
-					exercises: true
+					exercise: true
 				}
 			}
 		}
@@ -99,8 +99,8 @@ export const getWorkoutLogByID = asyncHandler(async (req, res) => {
 		res.status(404)
 		throw new Error('Workout not found!')
 	}
-
-	const minutes = Math.ceil(workoutLog.workout.exercises.length * 3.7)
+	
+	const minutes = Math.ceil(workoutLog?.workout?.exercises?.length * 3.7)
 
 	res.json({ ...workoutLog, minutes })
 })
